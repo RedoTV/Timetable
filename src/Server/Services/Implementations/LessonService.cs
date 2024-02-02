@@ -1,5 +1,6 @@
 using TimetableServer.Database;
 using TimetableServer.Models.DbModels;
+using TimetableServer.Models.Requests;
 using TimetableServer.Services.Interfaces;
 
 namespace TimetableServer.Services.Implementations;
@@ -14,11 +15,16 @@ public class LessonService : ILessonService
         _logger = logger;
     }
 
-    public async Task<bool> AddFaculties(ICollection<Faculty> faculties)
+    public async Task<bool> AddFaculties(string[] facultiesName)
     {
         _logger.LogInformation("Adding Faculties ...");
         try
         {
+            ICollection<Faculty> faculties = new List<Faculty>();
+            foreach (string facultyName in facultiesName)
+            {
+                faculties.Add(new Faculty(){ Name = facultyName });
+            }
             await TimetableDB.Faculties.AddRangeAsync(faculties);
             await TimetableDB.SaveChangesAsync();
             _logger.LogInformation("faculties added");
@@ -31,13 +37,19 @@ public class LessonService : ILessonService
         }
     }
 
-    public async Task<bool> AddSemester(Semester semester)
+    public async Task<bool> AddSemester(SemesterRequestForm semesterForm)
     {
         _logger.LogInformation("Adding Semester...");
         try
         {
+            Semester semester = new Semester(){
+                FromDate = semesterForm.FromDate,
+                ToDate = semesterForm.ToDate,
+                FacultyId = semesterForm.FacultyId
+            };
+
             TimetableDB.Faculties
-                .Where(f => f.Id == semester.FacultyId)
+                .Where(f => f.Id == semesterForm.FacultyId)
                 .FirstOrDefault()!
                 .Semesters.Add(semester);
 
@@ -52,20 +64,29 @@ public class LessonService : ILessonService
         }
     }
 
-    public async Task<bool> AddGroups(ICollection<Group> groups)
+    public async Task<bool> AddGroups(GroupRequestForm[] groupsForm)
     {
         try
         {
-            if(groups.Count() == 0)
+            if(groupsForm.Count() == 0)
                 return false;
 
             _logger.LogInformation("Take semesterId from all groups");
-            int semesterId = groups.Where(gr => gr.SemesterId != 0).First()!.SemesterId;
+            int semesterId = groupsForm.Where(gr => gr.SemesterId != 0).First()!.SemesterId;
 
             _logger.LogInformation("Find semester by semesterId");
             Semester semester = TimetableDB.Semesters.Where(s => s.Id == semesterId).First();
 
             _logger.LogInformation("Adding Groups...");
+            ICollection<Group> groups = new List<Group>();
+            foreach (var group in groupsForm)
+            {
+                groups.Add(new Group(){
+                    Name = group.Name,
+                    SemesterId = group.SemesterId
+                });
+            }
+
             foreach (Group group in groups)
             {
                 group.SemesterId = semesterId;
@@ -98,11 +119,9 @@ public class LessonService : ILessonService
             await AddWeeksForAllGroups(firstWeekIsOdd,semester,groups);
 
             _logger.LogInformation("Weeks are initialized");
-
-            
         }
         catch(Exception exc){
-            _logger.LogCritical("weeks aren't initialized: " + exc.Message);
+            _logger.LogCritical("Weeks aren't initialized: " + exc.Message);
             return false;
         }
         return true;  
@@ -218,19 +237,29 @@ public class LessonService : ILessonService
         return true;
     }
 
-    public Task<bool> AddLessons(ICollection<Lesson> lessons, bool firstWeekIsOdd, int group)
+    public Task<bool> AddLessons(ICollection<Lesson> lessons, bool firstWeekIsOdd, int groupId)
     {
-        // ICollection<Week> weeks;
-        // if(firstWeekIsOdd == true)
-        //     weeks = TimetableDB.Weeks.Where(week => week.IsOdd == firstWeekIsOdd).ToList();
-        // else
-        //     weeks = TimetableDB.Weeks.Where(week => week.IsOdd == firstWeekIsOdd).ToList();
+        TimetableDB.Groups.Find(groupId);
         throw new NotImplementedException();
     }
 
-    public Task<bool> AddTeachers(ICollection<Teacher> teacher)
+    public async Task<bool> AddTeachers(ICollection<Teacher> teacher)
     {
-        throw new NotImplementedException();
+        try{
+            if(teacher.Count() == 0)
+                return false;
+
+            _logger.LogInformation("Adding teachers to database");
+            await TimetableDB.Teachers.AddRangeAsync(teacher);
+
+            await TimetableDB.SaveChangesAsync();    
+            _logger.LogInformation("Teachers were added");
+        }
+        catch(Exception exc){
+            _logger.LogCritical("Teachers weren't added: " + exc.Message);
+            return false;
+        }
+        return true;
     }
 
     public Task GetFacultiesName()

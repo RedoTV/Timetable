@@ -20,97 +20,81 @@ public class TimetableController : ControllerBase
         LessonService = lessonService;
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("addFaculties")]
-    public async Task<IActionResult> AddFaculties()
+    public async Task<IActionResult> AddFaculties(string[] facultiesName)
     {
-        ICollection<Faculty> faculties = new List<Faculty>(){
-                new Faculty(){ Name = "Math"},
-                new Faculty(){ Name = "Physics"}
-            };
-        return Ok(await LessonService.AddFaculties(faculties));
+        var response = await LessonService.AddFaculties(facultiesName);
+        if(response == false)
+            return BadRequest("faculties haven't been added");
+
+        return Ok(response);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("addSemester")]
-    public async Task<IActionResult> AddSemester()
+    public async Task<IActionResult> AddSemester(SemesterRequestForm semester)
     {
-        Semester semester = new Semester(){
-            FromDate = new DateTime(24, 1,24),
-            ToDate = new DateTime(27,06,27),
-            FacultyId = 3
-        };
-        return Ok(await LessonService.AddSemester(semester));
+        bool response = await LessonService.AddSemester(semester);
+        if(response == false)
+            return BadRequest("The semester haven't been added");
+
+        return Ok(response);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("addGroups")]
-    public async Task<IActionResult> AddGroups()
+    public async Task<IActionResult> AddGroups(GroupRequestForm[] groups)
     {
-        ICollection<Group> groups = new List<Group>(){
-            new Group(){
-                Name = "PRO-12",
-                SemesterId = 1
-            },
-            new Group(){
-                Name = "PRO-11",
-                SemesterId = 1
-            },
-            new Group(){
-                Name = "ITP-11",
-                SemesterId = 1
-            }
-        };  
-        return Ok(await LessonService.AddGroups(groups));
+        bool response = await LessonService.AddGroups(groups);
+        if(response == false)
+            return BadRequest("Groups haven't been added");
+
+        return Ok(response);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("initializeWeeks")]
-    public async Task<IActionResult> InitializeWeeks()
+    public async Task<IActionResult> InitializeWeeks(int semesterId, bool firstWeekIsOdd)
     {
-        return Ok(await LessonService.InitializeSemesterWeeks(1, true));
+        bool response = await LessonService.InitializeSemesterWeeks(semesterId, firstWeekIsOdd);
+        if(response == false)
+            return BadRequest("Weeks are not initialized");
+
+        return Ok(response);
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("initializeDays")]
-    public async Task<IActionResult> InitializeDays()
+    public async Task<IActionResult> InitializeDays(int semesterId)
     {
-        return Ok(await LessonService.InitializeWeekDays(1));
+        bool response = await LessonService.InitializeWeekDays(semesterId);
+        if(response == false)
+            return BadRequest("Days are not initialized");
+
+        return Ok(response);
     }
 
-    // [HttpGet]
-    // [Route("getCurrentWeek")]
-    // public async Task<WeekModelResponse> GetCurrentWeek()
-    // {
-        
-    // }
+    [HttpPost]
+    [Route("addTeachers")]
+    public async Task<IActionResult> AddTeachers(ICollection<Teacher> teachers)
+    {
+        bool response = await LessonService.AddTeachers(teachers);
+        if(response == false)
+            return BadRequest("Teachers haven't been added");
 
-    // [HttpGet]
-    // [Route("getAllWeeks")]
-    // public async Task<WeekModelResponse[]> GetAllWeeks()
-    // {
-        
-    // }
+        return Ok(response);
+    }
 
-    // [HttpGet]
-    // [Route("getWeek/{weekNumber}")]
-    // public async Task<WeekModelResponse> GetWeek(int weekNumber)
-    // {
-        
-    // }
+    [HttpPost]
+    [Route("addLessons")]
+    public async Task<IActionResult> AddLessons(ICollection<Lesson> lessons, bool firstWeekIsOdd, int groupId)
+    {
+        bool response = await LessonService.AddLessons(lessons, firstWeekIsOdd, groupId);
+        if(response == false)
+            return BadRequest("Lessons haven't been added");
 
-    // [Authorize(Roles = RolesEnum.User)]
-    // [HttpPost]
-    // [Route("addDay")]
-    // public IActionResult AddDayInWeek(DayModelRequest day)
-    // {
-        
-    // }
+        return Ok(response);
+    }
 
-    // [HttpPost]
-    // [Route("initialize")]
-    // public async Task<IActionResult> InitializeTable(DateTime dateOfStart, DateTime dateOfEnd)
-    // {
-        
-    // }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\TimetableServer\\src\\App\\TimetableServer.csproj": {}
+    "C:\\Projects\\Timetable\\src\\Server\\TimetableServer.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\TimetableServer\\src\\App\\TimetableServer.csproj": {
+    "C:\\Projects\\Timetable\\src\\Server\\TimetableServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\TimetableServer\\src\\App\\TimetableServer.csproj",
+        "projectUniqueName": "C:\\Projects\\Timetable\\src\\Server\\TimetableServer.csproj",
         "projectName": "TimetableServer",
-        "projectPath": "C:\\Projects\\TimetableServer\\src\\App\\TimetableServer.csproj",
+        "projectPath": "C:\\Projects\\Timetable\\src\\Server\\TimetableServer.csproj",
         "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\TimetableServer\\src\\App\\obj\\",
+        "outputPath": "C:\\Projects\\Timetable\\src\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config"
