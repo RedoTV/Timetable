@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "zk+C9N8jn4wlW4H7UPjDXukB5Va7Jv731Boq9DkUPSg=",
+  "Source": "TimetableServer",
+  "BasePath": "_content/TimetableServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

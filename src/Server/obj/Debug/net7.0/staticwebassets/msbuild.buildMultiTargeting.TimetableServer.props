@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\TimetableServer.props" />
+</Project>
