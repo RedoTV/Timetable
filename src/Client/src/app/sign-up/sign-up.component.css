@@ -1,0 +1,18 @@
+.login-container{
+    background-color: #a3a4f7;
+    margin: 50px auto 0px auto;
+}
+
+.image-container{
+    width: 350px;
+    padding-right: 10px;
+    border-right:1px solid rgb(134, 134, 134);
+}
+
+.login-form{
+    
+}
+
+.btn-login{
+    float: right;
+}

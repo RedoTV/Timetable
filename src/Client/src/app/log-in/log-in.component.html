@@ -1,5 +1,5 @@
-<div class="d-flex m-auto p-3  container-sm login-container rounded-2 row">
-    <div class="col d-none d-sm-none d-md-block ">
+<div class="d-flex p-3 container-sm login-container rounded-4 row">
+    <div class="col d-none d-sm-none d-md-block">
         <div class="d-flex justify-content-center">
             <img class="image-container mx-auto" src="../../assets/clock.png" alt="">
         </div>
@@ -8,14 +8,17 @@
         <div class="form">
             <div class="mb-3">
                 <label for="" class="form-label">Логин</label>
-                <input type="text" class="form-control" name="" id="" placeholder="Введите логин"/>
+                <input type="text" class="form-control" name="" placeholder="Введите логин"/>
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Пароль</label>
-                <input type="password" class="form-control" name="" id="" placeholder="Введите пароль"/>
+                <input type="password" class="form-control" name="" placeholder="Введите пароль"/>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            
+            <div>
+                <button type="submit" class="btn btn-primary">Войти</button> 
+                <a routerLink="/signup" class="btn btn-success btn-register">Регистрация</a>
+            </div>
         </div>
+        
     </div>
 </div>
