@@ -237,9 +237,19 @@ public class LessonService : ILessonService
         return true;
     }
 
-    public Task<bool> AddLessons(ICollection<Lesson> lessons, bool firstWeekIsOdd, int groupId)
+    public Task<bool> AddLessonsToGroup(ICollection<Lesson> lessons, bool firstWeekIsOdd, int groupId)
     {
-        TimetableDB.Groups.Find(groupId);
+        Group group = TimetableDB.Groups.Find(groupId)!;
+        ICollection<Week> weeks;
+        if(firstWeekIsOdd == true)
+            weeks = group.Weeks.Where((week,index) => (index % 2) == 0).ToList()!;
+        else
+            weeks = group.Weeks.Where((week,index) => (index % 2) != 0).ToList()!;
+
+        // foreach (var week in weeks)
+        // {
+        //     week.Days.Add()
+        // }
         throw new NotImplementedException();
     }
 

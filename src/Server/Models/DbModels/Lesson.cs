@@ -19,8 +19,13 @@ public class Lesson
 
     [Required]
     public TimeSpan Start{get;set;}
+
+    [Required]
     public TimeSpan Finish{get;set;}
     
+    [Required]
+    public int LessonNumber {get;set;}
+
     public int DayId {get;set;}
     public Day Day { get; set; } = null!;
 }

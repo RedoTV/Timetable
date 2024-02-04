@@ -1,0 +1,6 @@
+c:\Projects\Timetable\src\IntegrationTests\obj\Debug\net7.0\IntegrationTests.csproj.AssemblyReference.cache
+c:\Projects\Timetable\src\IntegrationTests\obj\Debug\net7.0\MvcTestingAppManifest.json
+c:\Projects\Timetable\src\IntegrationTests\obj\Debug\net7.0\IntegrationTests.GeneratedMSBuildEditorConfig.editorconfig
+c:\Projects\Timetable\src\IntegrationTests\obj\Debug\net7.0\IntegrationTests.AssemblyInfoInputs.cache
+c:\Projects\Timetable\src\IntegrationTests\obj\Debug\net7.0\IntegrationTests.AssemblyInfo.cs
+c:\Projects\Timetable\src\IntegrationTests\obj\Debug\net7.0\IntegrationTests.csproj.CoreCompileInputs.cache
