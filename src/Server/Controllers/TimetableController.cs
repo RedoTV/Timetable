@@ -20,6 +20,20 @@ public class TimetableController : ControllerBase
         LessonService = lessonService;
     }
 
+    [HttpGet]
+    [Route("getAllFaculties")]
+    public IEnumerable<Faculty> GetAllFaculties()
+    {
+        return LessonService.GetAllFaculties();
+    }
+
+    [HttpGet]
+    [Route("getAllSemesters")]
+    public IEnumerable<Semester> GetAllSemesters()
+    {
+        return LessonService.GetAllSemesters();
+    }
+
     [HttpPost]
     [Route("addFaculties")]
     public async Task<IActionResult> AddFaculties(string[] facultiesName)
@@ -88,9 +102,9 @@ public class TimetableController : ControllerBase
 
     [HttpPost]
     [Route("addLessons")]
-    public async Task<IActionResult> AddLessons(ICollection<Lesson> lessons, bool firstWeekIsOdd, int groupId)
+    public async Task<IActionResult> AddLessons(ICollection<LessonRequestForm> lessons, bool firstWeekIsOdd, int groupId)
     {
-        bool response = await LessonService.AddLessons(lessons, firstWeekIsOdd, groupId);
+        bool response = await LessonService.AddLessonsToGroup(lessons, firstWeekIsOdd, groupId);
         if(response == false)
             return BadRequest("Lessons haven't been added");
 

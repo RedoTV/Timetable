@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TimetableServer.Database;
 using TimetableServer.Models.DbModels;
 using TimetableServer.Models.Requests;
@@ -237,20 +238,74 @@ public class LessonService : ILessonService
         return true;
     }
 
-    public Task<bool> AddLessonsToGroup(ICollection<Lesson> lessons, bool firstWeekIsOdd, int groupId)
+    public async Task<bool> AddLessonsToGroup(ICollection<LessonRequestForm> lessons, bool firstWeekIsOdd, int groupId)
     {
-        Group group = TimetableDB.Groups.Find(groupId)!;
-        ICollection<Week> weeks;
-        if(firstWeekIsOdd == true)
-            weeks = group.Weeks.Where((week,index) => (index % 2) == 0).ToList()!;
-        else
-            weeks = group.Weeks.Where((week,index) => (index % 2) != 0).ToList()!;
+        try
+        {
+            _logger.LogInformation("Finding group by id");
+            Group group = (await TimetableDB.Groups.FindAsync(groupId))!;
 
-        // foreach (var week in weeks)
-        // {
-        //     week.Days.Add()
-        // }
-        throw new NotImplementedException();
+            _logger.LogInformation("Choosing: odd or even weeks");
+            ICollection<Week> weeks;
+            if(firstWeekIsOdd == true)
+                weeks = group.Weeks.Where((week,index) => (index % 2) == 0).ToList()!;
+            else
+                weeks = group.Weeks.Where((week,index) => (index % 2) != 0).ToList()!;
+
+            _logger.LogInformation("Adding lessons to every chosen week");
+            await AddLessonsToChosenDays(lessons,weeks);
+
+            await TimetableDB.SaveChangesAsync();
+            return true;
+        }
+        catch(Exception exc){
+            _logger.LogCritical("Lessons aren't added: " + exc.Message);
+            return false;
+        }
+    }
+
+    private Lesson ParseLessonsToDbModel(LessonRequestForm lesson)
+    {
+        Lesson lessonsDbModel = new Lesson();
+        Teacher teacher;
+        
+        string[] fullName = lesson.Teacher.Split(' ',StringSplitOptions.RemoveEmptyEntries);
+        
+        teacher = TimetableDB.Teachers.Where(t => 
+            t.FirstName == fullName[0] &&
+            t.LastName == fullName[1] &&
+            t.MiddleName == fullName[2]
+        ).FirstOrDefault()!;
+
+        lessonsDbModel = new Lesson(){
+            Teacher = teacher,
+            Room = lesson.Room,
+            ClassName = lesson.ClassName,
+            Start = lesson.Start,
+            Finish = lesson.Finish,
+            LessonNumber = lesson.LessonNumber
+        };
+
+        return lessonsDbModel;
+    }
+
+    private Task<bool> AddLessonsToChosenDays(ICollection<LessonRequestForm> lessons, ICollection<Week> weeks)
+    {
+        ICollection<Day> days;
+
+        foreach (var lesson in lessons)
+        {
+            foreach (var week in weeks)
+            {
+                days = week.Days.Where(day => day.DayNumber == lesson.DayNumber).ToList();
+                foreach (var day in days)
+                {
+                    day.Lessons.Add(ParseLessonsToDbModel(lesson));
+                }
+            }
+        }
+
+        return Task.FromResult(true);
     }
 
     public async Task<bool> AddTeachers(ICollection<Teacher> teacher)
@@ -290,5 +345,15 @@ public class LessonService : ILessonService
     public Task GetCurrentWeek()
     {
         throw new NotImplementedException();
+    }
+
+    public IEnumerable<Faculty> GetAllFaculties()
+    {
+        return TimetableDB.Faculties.AsEnumerable();
+    }
+
+    public IEnumerable<Semester> GetAllSemesters()
+    {
+        return TimetableDB.Semesters.AsEnumerable();
     }
 }

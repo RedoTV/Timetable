@@ -2,6 +2,6 @@
 
 public class GroupRequestForm
 {
-    public string Name {get;set;} = null!;
-    public int SemesterId {get;set;}
+    public required string Name {get;set;} = null!;
+    public required int SemesterId {get;set;}
 }
