@@ -1,5 +1,9 @@
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TimetableServer.Database;
+using TimetableServer.HelperClasses;
 using TimetableServer.Models.DbModels;
 using TimetableServer.Models.Requests;
 using TimetableServer.Services.Interfaces;
@@ -242,18 +246,18 @@ public class LessonService : ILessonService
     {
         try
         {
-            _logger.LogInformation("Finding group by id");
-            Group group = (await TimetableDB.Groups.FindAsync(groupId))!;
-
+            _logger.LogInformation("Finding weeks by groupId");
+            IEnumerable<Week> weeks = await TimetableDB.Weeks.Where((week) => week.GroupId == groupId).ToListAsync();
+            
+            
             _logger.LogInformation("Choosing: odd or even weeks");
-            ICollection<Week> weeks;
             if(firstWeekIsOdd == true)
-                weeks = group.Weeks.Where((week,index) => (index % 2) == 0).ToList()!;
+                weeks = weeks.Where((week,index) => (index % 2) == 0);
             else
-                weeks = group.Weeks.Where((week,index) => (index % 2) != 0).ToList()!;
+                weeks = weeks.Where((week,index) => (index % 2) != 0);
 
             _logger.LogInformation("Adding lessons to every chosen week");
-            await AddLessonsToChosenDays(lessons,weeks);
+            await AddLessonsToChosenDaysAsync(lessons,weeks);
 
             await TimetableDB.SaveChangesAsync();
             return true;
@@ -264,48 +268,44 @@ public class LessonService : ILessonService
         }
     }
 
-    private Lesson ParseLessonsToDbModel(LessonRequestForm lesson)
-    {
-        Lesson lessonsDbModel = new Lesson();
-        Teacher teacher;
+    private async Task<Teacher> GetTeacherAsync(string fullName)
+    {     
+        string[] splitedFullName = fullName.Trim().Split(' ',StringSplitOptions.RemoveEmptyEntries);
         
-        string[] fullName = lesson.Teacher.Split(' ',StringSplitOptions.RemoveEmptyEntries);
-        
-        teacher = TimetableDB.Teachers.Where(t => 
-            t.FirstName == fullName[0] &&
-            t.LastName == fullName[1] &&
-            t.MiddleName == fullName[2]
-        ).FirstOrDefault()!;
-
-        lessonsDbModel = new Lesson(){
-            Teacher = teacher,
-            Room = lesson.Room,
-            ClassName = lesson.ClassName,
-            Start = lesson.Start,
-            Finish = lesson.Finish,
-            LessonNumber = lesson.LessonNumber
-        };
-
-        return lessonsDbModel;
+        return (await TimetableDB.Teachers.Where(t => 
+            t.FirstName == splitedFullName[0] &&
+            t.LastName == splitedFullName[1] &&
+            t.MiddleName == splitedFullName[2]
+        ).FirstOrDefaultAsync())!;
     }
 
-    private Task<bool> AddLessonsToChosenDays(ICollection<LessonRequestForm> lessons, ICollection<Week> weeks)
-    {
-        ICollection<Day> days;
+    private async Task AddLessonsToChosenDaysAsync(ICollection<LessonRequestForm> lessons, IEnumerable<Week> weeks)
+    {    
+        var days =  from day in (await TimetableDB.Days.ToListAsync())
+                    join week in weeks on day.WeekId equals week.Id
+                    select new
+                    {
+                        DayId = day.Id,
+                        DayNumber = day.DayNumber
+                    };
 
+        ICollection<Lesson> addedLessons = new List<Lesson>();
+        Lesson lessonTemp;
         foreach (var lesson in lessons)
         {
-            foreach (var week in weeks)
+            lessonTemp = lesson.ParseToDbModel(await GetTeacherAsync(lesson.Teacher));
+            foreach(var day in days)
             {
-                days = week.Days.Where(day => day.DayNumber == lesson.DayNumber).ToList();
-                foreach (var day in days)
+                if(lesson.DayNumber == day.DayNumber)
                 {
-                    day.Lessons.Add(ParseLessonsToDbModel(lesson));
+                    lessonTemp.DayId = day.DayId;
+                    addedLessons.Add(lessonTemp.ShallowCopy());
                 }
             }
         }
 
-        return Task.FromResult(true);
+        await TimetableDB.AddRangeAsync(addedLessons);
+        await TimetableDB.SaveChangesAsync();
     }
 
     public async Task<bool> AddTeachers(ICollection<Teacher> teacher)

@@ -12,8 +12,8 @@ using TimetableServer.Database;
 namespace TimetableServer.Migrations
 {
     [DbContext(typeof(TimetableDBContext))]
-    [Migration("20240129075456_DaysTableChanges")]
-    partial class DaysTableChanges
+    [Migration("20240205184835_LessonDbModelChanges")]
+    partial class LessonDbModelChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,9 @@ namespace TimetableServer.Migrations
                     b.Property<TimeSpan>("Finish")
                         .HasColumnType("time");
 
+                    b.Property<int>("LessonNumber")
+                        .HasColumnType("int");
+
                     b.Property<string>("Room")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -157,13 +160,21 @@ namespace TimetableServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teacher");
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("TimetableServer.Models.DbModels.User", b =>

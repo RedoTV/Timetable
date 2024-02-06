@@ -28,4 +28,9 @@ public class Lesson
 
     public int DayId {get;set;}
     public Day Day { get; set; } = null!;
+
+    public Lesson ShallowCopy()
+    {
+        return (Lesson) this.MemberwiseClone();
+    }
 }
