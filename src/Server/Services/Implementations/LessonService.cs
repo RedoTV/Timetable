@@ -248,16 +248,16 @@ public class LessonService : ILessonService
         {
             _logger.LogInformation("Finding weeks by groupId");
             IEnumerable<Week> weeks = await TimetableDB.Weeks.Where((week) => week.GroupId == groupId).ToListAsync();
-            
+            IEnumerable<int> weeksId;
             
             _logger.LogInformation("Choosing: odd or even weeks");
             if(firstWeekIsOdd == true)
-                weeks = weeks.Where((week,index) => (index % 2) == 0);
+                weeksId = weeks.Where((week,index) => (index % 2) == 0).Select(w => w.Id);
             else
-                weeks = weeks.Where((week,index) => (index % 2) != 0);
+                weeksId = weeks.Where((week,index) => (index % 2) != 0).Select(w => w.Id);
 
             _logger.LogInformation("Adding lessons to every chosen week");
-            await AddLessonsToChosenDaysAsync(lessons,weeks);
+            await AddLessonsToChosenDaysAsync(lessons,weeksId);
 
             await TimetableDB.SaveChangesAsync();
             return true;
@@ -279,10 +279,12 @@ public class LessonService : ILessonService
         ).FirstOrDefaultAsync())!;
     }
 
-    private async Task AddLessonsToChosenDaysAsync(ICollection<LessonRequestForm> lessons, IEnumerable<Week> weeks)
+    private async Task AddLessonsToChosenDaysAsync(ICollection<LessonRequestForm> lessons, IEnumerable<int> weeksId)
     {    
-        var days =  from day in (await TimetableDB.Days.ToListAsync())
-                    join week in weeks on day.WeekId equals week.Id
+        var days =  from day in TimetableDB.Days
+                    from week in TimetableDB.Weeks
+                    where weeksId.Contains(week.Id)
+                    where week.Days.Contains(day)
                     select new
                     {
                         DayId = day.Id,
@@ -327,14 +329,14 @@ public class LessonService : ILessonService
         return true;
     }
 
-    public Task GetFacultiesName()
+    public async Task<IEnumerable<string>> GetFacultiesNameAsync()
     {
-        throw new NotImplementedException();
+        return await TimetableDB.Faculties.Select(f => f.Name).ToArrayAsync();
     }
 
-    public Task GetSemesters()
+    public async Task<IEnumerable<Semester>> GetSemestersAsync(int facultyId)
     {
-        throw new NotImplementedException();
+        return await TimetableDB.Semesters.Where(s => s.FacultyId == facultyId).ToArrayAsync();
     }
 
     public Task GetWeekById(int weekId)
@@ -342,18 +344,65 @@ public class LessonService : ILessonService
         throw new NotImplementedException();
     }
 
-    public Task GetCurrentWeek()
+    public async Task<Week> GetCurrentWeekAsync(int groupId)
     {
-        throw new NotImplementedException();
+        return (await TimetableDB.Weeks
+            .Where(w => w.GroupId == groupId)
+            .Where(w => w.WeekStart < DateTime.Now && DateTime.Now < w.WeekEnd)
+            .FirstOrDefaultAsync())!;
     }
 
-    public IEnumerable<Faculty> GetAllFaculties()
+    public async Task<ICollection<Day>> GetDaysAsync(int weekId)
     {
-        return TimetableDB.Faculties.AsEnumerable();
+        return await TimetableDB.Days
+            .Where(d => d.WeekId == weekId)
+            .ToArrayAsync();
     }
 
-    public IEnumerable<Semester> GetAllSemesters()
+    public async Task<Day> GetCurrentDayAsync(int groupId)
     {
-        return TimetableDB.Semesters.AsEnumerable();
+        int weekId = (await GetCurrentWeekAsync(groupId)).Id;
+        return (await TimetableDB.Days
+            .Where(d => d.WeekId == weekId)
+            .Where(d => d.Date.DayOfWeek == DateTime.Now.DayOfWeek)
+            .FirstOrDefaultAsync())!;
+    }
+
+    public async Task<ICollection<Lesson>> GetCurrentDayLessons(int groupId)
+    {
+        int dayId = (await GetCurrentDayAsync(groupId)).Id;
+        return await TimetableDB.Lessons
+            .Where(l => l.DayId == dayId)
+            .ToArrayAsync();
+    }
+
+    public async Task<ICollection<Lesson>> GetDayLessons(int dayId)
+    {
+        return await TimetableDB.Lessons
+            .Where(l => l.DayId == dayId)
+            .ToArrayAsync();
+    }
+
+    private async void ChangeDayLessons(Day day)
+    {
+        day.Lessons = await GetDayLessons(day.Id);
+    }
+
+    public async Task<Week> GetCurrentWeekFullInfo(int groupId)
+    {
+        Week week = await GetCurrentWeekAsync(groupId);
+        week.Days = await GetDaysAsync(week.Id);
+        
+        foreach(var day in week.Days)
+        {
+            day.Lessons = await GetDayLessons(day.Id);
+        }
+        return week;
+    }
+
+    public async Task<Day> GetDaysByIdAsync(int groupId)
+    {
+        int weekId = (await GetCurrentWeekAsync(groupId)).Id;
+        return (await TimetableDB.Days.Where(d => d.WeekId == weekId).FirstOrDefaultAsync())!;
     }
 }

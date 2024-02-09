@@ -21,17 +21,31 @@ public class TimetableController : ControllerBase
     }
 
     [HttpGet]
-    [Route("getAllFaculties")]
-    public IEnumerable<Faculty> GetAllFaculties()
+    [Route("getFacultiesName")]
+    public async Task<IEnumerable<string>> GetFacultiesName()
     {
-        return LessonService.GetAllFaculties();
+        return await LessonService.GetFacultiesNameAsync();
     }
 
     [HttpGet]
-    [Route("getAllSemesters")]
-    public IEnumerable<Semester> GetAllSemesters()
+    [Route("getSemesters")]
+    public async Task<IEnumerable<Semester>> GetSemesters(int facultyId)
     {
-        return LessonService.GetAllSemesters();
+        return await LessonService.GetSemestersAsync(facultyId);
+    }
+
+    [HttpGet]
+    [Route("getCurrentWeek")]
+    public async Task<Week> GetCurrentWeek(int groupId)
+    {
+        return await LessonService.GetCurrentWeekAsync(groupId);
+    }
+
+    [HttpGet]
+    [Route("getCurrentWeekFullInfo")]
+    public async Task<Week> GetCurrentWeekFullInfo(int groupId)
+    {
+        return await LessonService.GetCurrentWeekFullInfo(groupId);
     }
 
     [HttpPost]

@@ -1,4 +1,6 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TimetableServer.Database;
 using TimetableServer.HelperClasses;
@@ -6,9 +8,13 @@ using TimetableServer.Services.Implementations;
 using TimetableServer.Services.Interfaces;
 
 
-var builder = WebApplication.CreateBuilder(args);string dbConnection = builder.Configuration.GetConnectionString("DbConnection")!;builder.Services.AddControllers();
+var builder = WebApplication.CreateBuilder(args);string dbConnection = builder.Configuration.GetConnectionString("DbConnection")!;
+builder.Services.AddControllers().AddNewtonsoftJson(x => 
+    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();builder.Services.AddCors();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -25,9 +31,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
-builder.Services.AddSqlServer<TimetableDBContext>(dbConnection);
+builder.Services.AddDbContext<TimetableDBContext>(options => options.UseSqlServer(dbConnection));
 builder.Services.AddTransient<IIdentityService, IdentityService>();
-builder.Services.AddTransient<ILessonService, LessonService>();var app = builder.Build();app.UseCors(builder =>
+builder.Services.AddTransient<ILessonService, LessonService>();
+
+var app = builder.Build();
+app.UseCors(builder =>
 {
     builder.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
 });

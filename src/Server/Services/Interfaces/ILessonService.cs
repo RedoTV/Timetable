@@ -15,10 +15,10 @@ public interface ILessonService
     public Task<bool> AddTeachers(ICollection<Teacher> teacher);
 
     //get info from db
-    public Task GetFacultiesName();
-    public Task GetSemesters();
+    public Task<IEnumerable<string>> GetFacultiesNameAsync();
+    public Task<IEnumerable<Semester>> GetSemestersAsync(int facultyId);
     public Task GetWeekById(int weekId);
-    public Task GetCurrentWeek();
-    public IEnumerable<Faculty> GetAllFaculties();
-    public IEnumerable<Semester> GetAllSemesters();
+    public Task<Week> GetCurrentWeekAsync(int groupId);
+    public Task<Day> GetCurrentDayAsync(int groupId);
+    public Task<Week> GetCurrentWeekFullInfo(int groupId);
 }

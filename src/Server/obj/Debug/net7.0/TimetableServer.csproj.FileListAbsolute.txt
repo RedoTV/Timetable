@@ -399,3 +399,7 @@ C:\Projects\Timetable\src\Server\obj\Debug\net7.0\refint\TimetableServer.dll
 C:\Projects\Timetable\src\Server\obj\Debug\net7.0\TimetableServer.pdb
 C:\Projects\Timetable\src\Server\obj\Debug\net7.0\TimetableServer.genruntimeconfig.cache
 C:\Projects\Timetable\src\Server\obj\Debug\net7.0\ref\TimetableServer.dll
+C:\Projects\Timetable\src\Server\bin\Debug\net7.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Projects\Timetable\src\Server\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Projects\Timetable\src\Server\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Projects\Timetable\src\Server\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
