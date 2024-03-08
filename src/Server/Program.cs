@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Server.Models.GraphQl;
 using TimetableServer.Database;
 using TimetableServer.HelperClasses;
 using TimetableServer.Services.Implementations;
@@ -14,8 +15,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
 
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>();
 
-builder.Services.AddSwaggerGen();builder.Services.AddCors();
+builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -51,6 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.MapControllers();
+app.MapGraphQL();
 
 app.Run();
 public partial class Program{}

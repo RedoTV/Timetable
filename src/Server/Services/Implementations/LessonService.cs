@@ -25,12 +25,7 @@ public class LessonService : ILessonService
         _logger.LogInformation("Adding Faculties ...");
         try
         {
-            ICollection<Faculty> faculties = new List<Faculty>();
-            foreach (string facultyName in facultiesName)
-            {
-                faculties.Add(new Faculty(){ Name = facultyName });
-            }
-            await TimetableDB.Faculties.AddRangeAsync(faculties);
+            await TimetableDB.Faculties.AddRangeAsync(facultiesName.Select(f => new Faculty(){ Name = f }));
             await TimetableDB.SaveChangesAsync();
             _logger.LogInformation("faculties added");
             return true;
@@ -114,13 +109,16 @@ public class LessonService : ILessonService
     {
         try{
             _logger.LogInformation("Finding semester by semesterID");
-            Semester semester = TimetableDB.Semesters.Find(semesterId)!;
+            Semester? semester = await TimetableDB.Semesters.FindAsync(semesterId);
 
             _logger.LogInformation("getting all groups by semesterID");
-            ICollection<Group> groups = TimetableDB.Groups
-                .Where(gr => gr.SemesterId == semesterId)!.ToList();
+            ICollection<Group> groups = await TimetableDB.Groups
+                .Where(gr => gr.SemesterId == semesterId).ToListAsync();
             
             _logger.LogInformation("Initializing all weeks...");
+            if((semester == null) || (groups == null))
+                throw new NullReferenceException();
+            
             await AddWeeksForAllGroups(firstWeekIsOdd,semester,groups);
 
             _logger.LogInformation("Weeks are initialized");
@@ -380,6 +378,7 @@ public class LessonService : ILessonService
     {
         return await TimetableDB.Lessons
             .Where(l => l.DayId == dayId)
+            // .Join(TimetableDB.Teachers, l => l.Teacher, t => t.Id)
             .ToArrayAsync();
     }
 
@@ -397,6 +396,7 @@ public class LessonService : ILessonService
         {
             day.Lessons = await GetDayLessons(day.Id);
         }
+
         return week;
     }
 
