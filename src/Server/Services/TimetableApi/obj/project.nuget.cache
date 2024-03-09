@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CZm+D33+xQ19Z5TExVTC6EwaU7KXkzZqFV2fdi82Y3G6zR+wgnyKQ5MIlAARyXCRhxBvamizsAFSOCC6Ev3mfg==",
+  "dgSpecHash": "NqmbUBeKeM6/omulPC3QKwpwEI5xQFtcvo7pVPwF/s0W5osTwnK3TJrdaTSEA+N9cqlIoVdj/eqZUoiJ+4OmIg==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\Timetable\\src\\Server\\TimetableServer.csproj",
+  "projectFilePath": "C:\\Projects\\Timetable\\src\\Server\\Services\\TimetableApi\\TimetableServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Вадим\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Вадим\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

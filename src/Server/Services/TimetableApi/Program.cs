@@ -9,9 +9,13 @@ using TimetableServer.Services.Implementations;
 using TimetableServer.Services.Interfaces;
 
 
-var builder = WebApplication.CreateBuilder(args);string dbConnection = builder.Configuration.GetConnectionString("DbConnection")!;
-builder.Services.AddControllers().AddNewtonsoftJson(x => 
-    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+var builder = WebApplication.CreateBuilder(args);
+string dbConnection = builder.Configuration.GetConnectionString("DbConnection")!;
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(x => 
+        x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
 
 
 builder.Services.AddEndpointsApiExplorer();
