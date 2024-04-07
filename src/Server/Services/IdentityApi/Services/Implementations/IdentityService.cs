@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using IdentityApi.Data;
+using IdentityApi.Database;
 using IdentityApi.Models.DbModels;
 using IdentityApi.Models.Requests;
 using IdentityApi.Services.Interfaces;
@@ -105,7 +105,6 @@ namespace IdentityApi.Services.Implementations
                 byte[] hashedPassword = sha.ComputeHash(passwordInByte);
                 return Convert.ToBase64String(hashedPassword);
             });
-            
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "HafWTwlfKSQHHP3spDeUdZemls0RBLr+CBS+ogkYYYK2miHh8yi+VAkOY9wf6tx+nru5li1seahtp/lNMvBqFQ==",
+  "dgSpecHash": "DzSzqRbrsJVc2xKNI2IaKfB95hU+lsPInwfl/L3bQMNZbmE/MbIGCNOFXwJ2Cvd7S2iVUaS1z6PD8Z5DRUkDjA==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\IdentityApi.csproj",
   "expectedPackageFiles": [

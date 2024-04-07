@@ -1,0 +1,63 @@
+version: '3.9'
+services:
+  ocelot-gateway:
+    image: timetable-gateway
+    build:
+      context: ./Server/ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "7000:80"
+    depends_on:
+      - identity-api
+      - timetable-api
+    networks:
+      - ocelot-net
+        
+  identity-api:
+    image: identity-api
+    build:
+      context: ./Server/Services/IdentityApi
+      dockerfile: Dockerfile
+    ports:
+      - "7001:80"
+    depends_on:
+      - identity_db
+    networks:
+      ocelot-net:
+        aliases:
+          - identity
+
+  identity_db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "3wfyXHNj0i"
+      ACCEPT_EULA: "Y"
+    networks:
+      - ocelot-net
+
+  timetable-api:
+    image: timetable-api
+    build:
+      context: ./Server/Services/TimetableApi
+      dockerfile: Dockerfile
+    ports:
+      - "7002:80"
+    depends_on:
+      - timetable_db
+    networks:
+      ocelot-net:
+        aliases:
+          - timetable
+
+  timetable_db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "YzRZ48GUuL"
+      ACCEPT_EULA: "Y"
+    networks:
+      - ocelot-net
+
+networks:
+  ocelot-net: 
+    name: ocelot-net
+    driver: bridge

@@ -8,7 +8,7 @@ namespace TimetableServer.Database
         public TimetableDBContext(DbContextOptions optionsBuilder) : base(optionsBuilder)
         {
             // Database.EnsureDeleted();
-            // Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         
         public DbSet<Faculty> Faculties {get;set;}

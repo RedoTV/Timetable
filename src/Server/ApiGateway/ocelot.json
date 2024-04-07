@@ -1,0 +1,184 @@
+{
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:7000"
+    },
+    "Routes": [{
+        "UpstreamPathTemplate": "/gateway/timetable/getFacultiesName",
+        "UpstreamHttpMethod": ["Get"],
+        "DownstreamPathTemplate": "/timetable/getFacultiesName",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }]
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/getSemesters",
+        "UpstreamHttpMethod": ["Get"],
+        "DownstreamPathTemplate": "/timetable/getSemesters",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }]
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/getCurrentWeek",
+        "UpstreamHttpMethod": ["Get"],
+        "DownstreamPathTemplate": "/timetable/getCurrentWeek",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }]
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/getCurrentWeekFullInfo",
+        "UpstreamHttpMethod": ["Get"],
+        "DownstreamPathTemplate": "/timetable/getCurrentWeekFullInfo",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }]
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/addFaculties",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/addFaculties",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/addSemester",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/addSemester",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/addGroups",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/addGroups",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/initializeWeeks",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/initializeWeeks",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/initializeDays",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/initializeDays",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/addTeachers",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/addTeachers",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/timetable/addLessons",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/timetable/addLessons",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "timetable",
+            "Port": 80
+        }],
+        "AuthenticationOptions": {
+            "AuthenticationProviderKey": "Bearer",
+            "AllowedScopes": []
+        },
+        "RouteClaimsRequirement": {
+            "Role": "admin"
+        }
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/auth/signin",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/identity/signin",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "identity",
+            "Port": 80
+        }]
+    },
+    {
+        "UpstreamPathTemplate": "/gateway/auth/register",
+        "UpstreamHttpMethod": ["Post"],
+        "DownstreamPathTemplate": "/identity/register",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [{
+            "Host": "identity",
+            "Port": 80
+        }]
+    }]
+}

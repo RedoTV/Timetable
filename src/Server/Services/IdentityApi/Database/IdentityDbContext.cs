@@ -2,7 +2,7 @@ using IdentityApi.Models.DbModels;
 using IdentityApi.Models.Helpers;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityApi.Data
+namespace IdentityApi.Database
 {
     public class IdentityDbContext : DbContext
     {
