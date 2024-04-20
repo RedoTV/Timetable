@@ -56,7 +56,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {
@@ -73,7 +73,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {
@@ -90,7 +90,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {
@@ -107,7 +107,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {
@@ -124,7 +124,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {
@@ -141,7 +141,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {
@@ -158,7 +158,7 @@
             "AllowedScopes": []
         },
         "RouteClaimsRequirement": {
-            "Role": "admin"
+            "Role": "User"
         }
     },
     {

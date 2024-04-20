@@ -25,33 +25,18 @@ builder.Services
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = AuthOptions.ISSUER,
-            ValidateAudience = true,
-            ValidAudience = AuthOptions.AUDIENCE,
-            ValidateLifetime = true,
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true
-        };
-    });
+
 builder.Services.AddDbContext<TimetableDBContext>(options => options.UseSqlServer(dbConnection));
-builder.Services.AddTransient<IIdentityService, IdentityService>();
 builder.Services.AddTransient<ILessonService, LessonService>();
 
 var app = builder.Build();
 app.UseCors(builder =>
 {
-    builder.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
+    builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => true)
+        .AllowCredentials();
 });
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OJSFZOmY0veGUFz4ijbRUbRjE03wD3zamolblmx4qyesHLcq5UYCJR4cgChwuyaVO2HAfRKvyw/lKkVPilxlBA==",
+  "dgSpecHash": "AagfYdCXzWp6Owj8V7O0Pl0aWupfbYQjIZQ1Km1spfuOkFEKWYADoi128/1QKEu0hnSFnHpiTymAjCejm5dwRQ==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Timetable\\src\\Server\\Services\\TimetableApi\\TimetableServer.csproj",
   "expectedPackageFiles": [

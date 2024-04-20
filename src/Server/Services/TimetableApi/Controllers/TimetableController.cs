@@ -1,11 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using TimetableServer.HelperClasses;
+﻿using Microsoft.AspNetCore.Mvc;
 using TimetableServer.Models.DbModels;
 using TimetableServer.Models.Requests;
-using TimetableServer.Models.Responses;
-using TimetableServer.Services.Implementations;
 using TimetableServer.Services.Interfaces;
 
 namespace TimetableServer;

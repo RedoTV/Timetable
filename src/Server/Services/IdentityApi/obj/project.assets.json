@@ -3678,11 +3678,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\IdentityApi.csproj",
+      "projectUniqueName": "c:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\IdentityApi.csproj",
       "projectName": "IdentityApi",
-      "projectPath": "C:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\IdentityApi.csproj",
+      "projectPath": "c:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\IdentityApi.csproj",
       "packagesPath": "C:\\Users\\Вадим\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\obj\\",
+      "outputPath": "c:\\Projects\\Timetable\\src\\Server\\Services\\IdentityApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Вадим\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3749,7 +3749,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
       }
     }
   }

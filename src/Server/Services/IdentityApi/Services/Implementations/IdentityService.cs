@@ -32,7 +32,7 @@ namespace IdentityApi.Services.Implementations
             return await Task.Run(() => {
                 List<Claim> claimsForToken = new List<Claim>{
                         new Claim(ClaimTypes.Name, user.Name),
-                        new Claim("Role", user.Role.GetDisplayName())
+                        new Claim("Role", user.Role.ToString())
                     };
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Jwt:Key").Value!));
